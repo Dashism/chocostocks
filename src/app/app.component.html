@@ -1,6 +1,33 @@
 <h1>Gestion des stocks de chocolats :</h1>
 <div class="container">
-  <div class="stock" *ngFor="let chocoStock of chocoStocks">
-    Stock n°{{ chocoStock.id }} : {{ chocoStock.stock }}
-  </div>
+  <button class="btn btn-primary"
+    (click)="swapDisplay()">
+    {{ isList ? 'Créer un ChocoStock' : 'Revenir à la liste' }}
+  </button>
+  <ng-container *ngIf="isList; else elseChocoFormTpl">
+    <div class="stock" *ngFor="let chocoStock of chocoStocks">
+      Stock n°{{ chocoStock.id }} : {{ chocoStock.stock }}
+    </div>
+  </ng-container>
 </div>
+<ng-template #elseChocoFormTpl>
+  <h2>Créer un ChocoStock :</h2>
+  <form (ngSubmit)="validateForm(chocoForm)" #chocoForm="ngForm">
+    <div class="form-group">
+      <label for="id">Identifiant :</label>
+      <input type="number"
+        [(ngModel)]="modelChocoStock.id"
+        id="id" name="id" class="form-control"
+        required min="0">
+    </div>
+    <div class="form-group">
+      <label for="stock">Montant du stock :</label>
+      <input type="number"
+        [(ngModel)]="modelChocoStock.stock"
+        id="stock" name="stock" class="form-control"
+        required>
+    </div>
+    <button class="btn btn-primary"
+      [disabled]="chocoForm.invalid">Valider</button>
+  </form>
+</ng-template>

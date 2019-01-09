@@ -1,6 +1,8 @@
+import { ChocoStock } from './choco-stock';
 import { Component } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
-const CHOCO_STOCKS = [
+const CHOCO_STOCKS: Array<ChocoStock> = [
   {
     id: 0,
     stock: 100
@@ -17,7 +19,7 @@ const CHOCO_STOCKS = [
     id: 4,
     stock: 100
   }
-]
+];
 
 @Component({
   selector: 'app-root',
@@ -25,11 +27,23 @@ const CHOCO_STOCKS = [
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'chocostocks';
   chocoStocks: Array<any>;
+  isList: boolean;
+  modelChocoStock: ChocoStock;
 
   constructor() {
     this.chocoStocks = new Array();
     this.chocoStocks.push(...CHOCO_STOCKS);
+    this.isList = true;
+    this.modelChocoStock = new ChocoStock(null, null);
+  }
+
+  swapDisplay() {
+    this.isList = !this.isList;
+  }
+
+  validateForm(ngForm: NgForm) {
+    this.chocoStocks.push(new ChocoStock(this.modelChocoStock.id, this.modelChocoStock.stock));
+    ngForm.resetForm(new ChocoStock(null, null));
   }
 }
